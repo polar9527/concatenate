@@ -18,7 +18,7 @@ func main() {
 	flag.StringVar(&base16Str, "base", "0x800000", "base address")
 
 	flag.Parse()
-	base10, err := strconv.ParseInt(base16Str, 0, 64)
+	base10, err := strconv.ParseInt(base16, 16, 64)
 	if err != nil {
 		fmt.Errorf("base format error: %s", err.Error())
 		return

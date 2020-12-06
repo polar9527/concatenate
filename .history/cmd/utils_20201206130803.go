@@ -6,7 +6,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
@@ -55,7 +54,7 @@ func merge(rootPath, outImageName, imageMapName string, base int64) {
 
 			// record index
 
-			i := fmt.Sprintf("%v,%v,0x%v\n", index, fp.Name(), strconv.FormatInt(base+offset, 16))
+			// i := fmt.Sprintf("%v,%v,%v\n", index, fp.Name(),strconv.FormatInt(base + offset, 16))
 			// i := fmt.Sprintf("%v,%v,%v\n", index, fp.Name(), base+offset)
 			_, err := iWriter.WriteString(i)
 			if err != nil {

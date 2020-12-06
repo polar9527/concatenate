@@ -6,11 +6,11 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
 func merge(rootPath, outImageName, imageMapName string, base int64) {
+	// outFileName := "d:\\merge_result.txt"
 	outFileName := outImageName
 	outFile, openErr := os.OpenFile(outFileName, os.O_CREATE|os.O_WRONLY, 0600)
 
@@ -23,10 +23,10 @@ func merge(rootPath, outImageName, imageMapName string, base int64) {
 	bWriter := bufio.NewWriter(outFile)
 	iWriter := bufio.NewWriter(indexFile)
 	index := 1
-	offset := int64(0)
+	offset := 0
 
 	filepath.Walk(rootPath, func(path string, info os.FileInfo, err error) error {
-		fmt.Println("Processing:", path)
+		// fmt.Println("Processing:", path)
 		// filter, only wav file
 		if strings.HasSuffix(path, ".wav") {
 			// open
@@ -38,7 +38,7 @@ func merge(rootPath, outImageName, imageMapName string, base int64) {
 
 			// merge
 			bReader := bufio.NewReader(fp)
-			totalCount := int64(0)
+			totalCount := 0
 			for {
 				buffer := make([]byte, 1024)
 				readCount, readErr := bReader.Read(buffer)
@@ -49,20 +49,15 @@ func merge(rootPath, outImageName, imageMapName string, base int64) {
 					break
 				} else {
 					bWriter.Write(buffer[:readCount])
-					totalCount += int64(readCount)
+					totalCount += readCount
 				}
 			}
 
 			// record index
 
-			i := fmt.Sprintf("%v,%v,0x%v\n", index, fp.Name(), strconv.FormatInt(base+offset, 16))
-			// i := fmt.Sprintf("%v,%v,%v\n", index, fp.Name(), base+offset)
+			i := fmt.Sprintf("%v,%v,%v\n", index, fp.Name(), base+offset)
 			_, err := iWriter.WriteString(i)
 			if err != nil {
-				outFile.Close()
-				indexFile.Close()
-				os.Remove(outFileName)
-				os.Remove(indexFileName)
 				panic("write index error")
 			}
 			index++
