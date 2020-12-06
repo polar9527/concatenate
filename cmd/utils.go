@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func merge(rootPath, outImageName, imageMapName string, base int64) {
+func merge(rootPath, outImageName, imageMapName string, base int64, hexFlag bool) {
 	outFileName := outImageName
 	outFile, openErr := os.OpenFile(outFileName, os.O_CREATE|os.O_WRONLY, 0600)
 
@@ -54,9 +54,13 @@ func merge(rootPath, outImageName, imageMapName string, base int64) {
 			}
 
 			// record index
+			var i string
+			if hexFlag {
+				i = fmt.Sprintf("%v,%v,0x%v\n", index, fp.Name(), strconv.FormatInt(base+offset, 16))
+			} else {
+				i = fmt.Sprintf("%v,%v,%v\n", index, fp.Name(), base+offset)
+			}
 
-			i := fmt.Sprintf("%v,%v,0x%v\n", index, fp.Name(), strconv.FormatInt(base+offset, 16))
-			// i := fmt.Sprintf("%v,%v,%v\n", index, fp.Name(), base+offset)
 			_, err := iWriter.WriteString(i)
 			if err != nil {
 				outFile.Close()

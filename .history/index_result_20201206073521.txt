@@ -1,5 +1,0 @@
-FileName=data/resp1.wav Index=1 Offset=0
-FileName=data/resp2.wav Index=2 Offset=49740
-FileName=data/resp3.wav Index=3 Offset=96570
-570
- :

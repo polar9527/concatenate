@@ -10,5 +10,10 @@
 # linux         arm     incomplete
 # windows     386     incomplete
 
-GOOS=linux GOARCH=amd64 go build -vxn -o conc ./cmd
-GOOS=windows GOARCH=amd64 go build -vxn -o conc.exe ./cmd
+rm -rf ./history
+rm ../concatenate.tar.gz
+GOOS=linux GOARCH=amd64 go build -v -o conc ./cmd
+GOOS=windows GOARCH=amd64 go build -v -o conc.exe ./cmd
+cd ..
+tar -zcf concatenate.tar.gz concatenate
+cd -
